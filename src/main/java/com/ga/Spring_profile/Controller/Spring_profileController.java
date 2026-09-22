@@ -14,51 +14,51 @@ public class Spring_profileController {
 
     {
         projects.add("Spring Boot REST API");
-        projects.add("Java Calculator");
+        projects.add("Java Calculator App");
         projects.add("Task Management App");
         projects.add("Weather API");
-        projects.add("Elora Saloon");
-        projects.add("Car Rent System");
+        projects.add("Elora Saloon System");
+        projects.add("Car Rent App");
     }
 
-//    1. Welcome / Introduction
+    //    1. Welcome / Introduction
     @GetMapping("/welcome")
     public LinkedHashMap<String, String> greeting() {
         LinkedHashMap<String, String> response = new LinkedHashMap<String, String>();
         response.put("Application name", "Create My Spring Profile!");
         response.put("My name", "Hasan Ali");
-        response.put("Description","Spring Boot and REST API Development");
+        response.put("Description", "Spring Boot and REST API Development");
         response.put("Theme", "Software Development");
         return response;
     }
 
-//    2. Get All Items
+    //    2. Get All Items
     @GetMapping("/projects")
     public ArrayList<String> projects() {
         return projects;
     }
 
-//    3. Get One Item
-@GetMapping("/projects/{id}")
-public String project(@PathVariable int id) {
+    //    3. Get One Item
+    @GetMapping("/projects/{id}")
+    public String project(@PathVariable int id) {
 
-    if (id == 1) {
-        return "Spring Boot REST API";
-    } else if (id == 2) {
-        return "Java Calculator";
-    } else if (id == 3) {
-        return "Task Management App";
-    } else if (id == 4) {
-        return "Weather API";
-    } else if (id == 5) {
-        return "Elora Saloon";
-    } else if (id == 6) {
-        return "Car Rent System";
+        if (id == 1) {
+            return "Spring Boot REST API";
+        } else if (id == 2) {
+            return "Java Calculator";
+        } else if (id == 3) {
+            return "Task Management App";
+        } else if (id == 4) {
+            return "Weather API";
+        } else if (id == 5) {
+            return "Elora Saloon";
+        } else if (id == 6) {
+            return "Car Rent System";
+        }
+        return "Project not found";
     }
-    return "Project not found";
-}
 
-//4. Search
+    //4. Search
     @GetMapping("/projects/search")
     public ArrayList<String> search(@RequestParam String name) {
         ArrayList<String> response = new ArrayList<String>();
@@ -89,37 +89,53 @@ public String project(@PathVariable int id) {
         return response;
     }
 
-//    5. Filter
+    //    5. Filter
+    @GetMapping("/projects/filter")
+    public ArrayList<String> filter(@RequestParam String type) {
 
+        ArrayList<String> response = new ArrayList<String>();
 
-//    6. Create Something New
-@PostMapping("/projects")
-public String add_Project(@RequestBody String name) {
-    projects.add(name);
-    return "Added successfully";
-}
+        for (String project : projects) {
+            if (project.contains(type)) {
+                response.add(project);
+            }
+        }
 
-//    7. Update Something
+        return response;
+    }
 
+    //    6. Create Something New
+    @PostMapping("/projects")
+    public String add_Project(@RequestBody String name) {
+        projects.add(name);
+        return "Added successfully";
+    }
 
-//    8. Delete Something
+    //    7. Update Something
+    @PutMapping("/projects/{id}")
+    public String update_Project(@PathVariable int id, @RequestBody String name) {
+        projects.set(id - 1, name);
+        return "Updated successfully";
+    }
 
+    //    8. Delete Something
+    @DeleteMapping("/projects/{id}")
+    public String delete_Project(@PathVariable int id) {
+        projects.remove(id - 1);
+        return "Deleted successfully";
+    }
 
-//    9. Statistics / Summary
+    //    9. Statistics / Summary
+    @GetMapping("/projects/size")
+    public int projectsSize() {
+        return projects.size();
+    }
 
-
-//    10. Your Own Feature
-
-
-
-
-
-
-
-
-
-
-
-
+    //    10. Your Own Feature
+//
+    @GetMapping("/projects/favourite")
+    public String favourite() {
+        return "My favourite project is : Elora Saloon ";
+    }
 
 }
